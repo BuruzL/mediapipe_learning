@@ -1,5 +1,4 @@
-from models import count_fingers
-from models import distance
+from count_fingers import *
 
 def is_bird(hand_res, palm_a, palm_b):
 

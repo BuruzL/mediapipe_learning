@@ -10,7 +10,7 @@ def is_drunk(hand_res):
     if angle(ll[2], ll[3], ll[4]) > 145 and angle(ll[1], ll[2], ll[3]) > 150:
         count += 1
     palm = distance(ll[0], ll[9]) + 1e-6
-    for tip, joint in [(8, 5)]:
+    for tip, joint in [(20, 17)]:
         if (distance(ll[tip], ll[0]) - distance(ll[joint], ll[0])) / palm > 0.4:
             count += 1
     if(count!=2):

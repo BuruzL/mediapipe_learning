@@ -16,6 +16,10 @@ from is_gun import is_gun
 from is_song import is_song
 from is_anime import is_anime
 
+# Face expression modules
+from is_happy import is_happy
+from is_sad import is_sad
+
 # Dynamic gesture modules
 from is_rhythm import is_rhythm, reset_rhythm
 from is_doremifasolati import is_doremifasolati, reset_doremifasolati
@@ -47,11 +51,8 @@ face_mesh = mp_face_mesh.FaceMesh(
 
 # ====================================================================
 # UNIFIED CHECKERS
-# Every checker now has this signature:
+# Every checker has this signature:
 # (hand_res, face_res, palm_a, palm_b) -> bool
-#
-# Existing hand-only gestures simply ignore face_res.
-# Future face-expression gestures will use face_res.
 # ====================================================================
 
 def check_bird(hand_res, face_res, pa, pb):
@@ -88,6 +89,16 @@ def check_anime(hand_res, face_res, pa, pb):
     return is_anime(hand_res)
 
 
+# Face expression: smile
+def check_happy(hand_res, face_res, pa, pb):
+    return is_happy(face_res)
+
+
+# Face expression: sad/frown lips
+def check_sad(hand_res, face_res, pa, pb):
+    return is_sad(face_res)
+
+
 # Dynamic: one-hand piano-like tapping
 def check_rhythm(hand_res, face_res, pa, pb):
     return is_rhythm(hand_res)
@@ -121,14 +132,16 @@ WORD_BANK = {
     "GUN":            check_gun,
     "SONG":           check_song,
     "ANIME":          check_anime,
+    "HAPPY":          check_happy,
+    "SAD":            check_sad,
     "RHYTHM":         check_rhythm,
     "DOREMIFASOLATI": check_doremifasolati,
     "MOVIE":          check_movie,
     "TVSERIES":       check_tvseries,
 }
 
-# Dynamic gestures are motion-based, not hold-based
-# SONG and ANIME are static because they are held poses.
+# Dynamic gestures are motion-based, not hold-based.
+# HAPPY and SAD are static face expressions, so do NOT add them here.
 DYNAMIC_WORDS = {
     "RHYTHM",
     "DOREMIFASOLATI",
@@ -271,7 +284,7 @@ while True:
         game_over = True
 
     # ------------------------------------------------------------
-    # Gesture matching
+    # Gesture / expression matching
     # ------------------------------------------------------------
     if not game_over:
         checker = WORD_BANK[current_word]
@@ -285,7 +298,7 @@ while True:
                 current_word = new_word(exclude=current_word)
                 reset_dynamic_gestures()
 
-        # Static gestures: use hold timer
+        # Static gestures / face expressions: use hold timer
         else:
             if matched:
                 if hold_start is None:
@@ -389,7 +402,7 @@ while True:
             2
         )
 
-        # Hold-progress bar only for static gestures
+        # Hold-progress bar only for static gestures / expressions
         if hold_start is not None and current_word not in DYNAMIC_WORDS:
             held = time.time() - hold_start
             progress = min(1.0, held / HOLD_TIME)

@@ -13,6 +13,7 @@ from is_vowel import is_vowel
 from is_drunk import is_drunk
 from is_person import is_person
 from is_word_ok import is_word_ok
+from is_gun import is_gun
 
 
 # ====================================================================
@@ -49,6 +50,9 @@ def check_person(hand_res, pa, pb):
 def check_word_ok(hand_res, pa, pb):
     return is_word_ok(hand_res)
 
+def check_gun(hand_res, pa, pb):
+    return is_gun(hand_res)
+
 # Word bank: just add/remove entries to change the game
 WORD_BANK = {
     "BIRD":    check_bird,
@@ -56,6 +60,7 @@ WORD_BANK = {
     "DRUNK":   check_drunk,
     "PERSON":  check_person,
     "OK":      check_word_ok,
+    "GUN":     check_gun,
 }
 
 

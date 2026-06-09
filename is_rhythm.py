@@ -77,8 +77,9 @@ def is_rhythm(hand_res):
     if whole_hand_move > 0.35:
         return False
 
-    DOWN_DELTA = 0.06
-    UP_DELTA = -0.035
+    # Increase required finger movement to reduce false positives on held poses
+    DOWN_DELTA = 0.08
+    UP_DELTA = -0.03
 
     MIN_TAP_GAP = 0.15
     RHYTHM_WINDOW = 2.0
